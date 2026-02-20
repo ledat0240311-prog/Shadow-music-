@@ -55,10 +55,6 @@ export function Sidebar({ isOpen, setIsOpen, currentView, onNavigate }: SidebarP
       <div className="bg-[#121212] rounded-xl flex-1 flex flex-col overflow-hidden">
         <div className="p-4 shadow-lg z-10">
           <div className="flex items-center justify-between mb-4">
-            <button className="flex items-center gap-2 text-zinc-400 hover:text-white transition-colors">
-              <Library size={24} />
-              <span className="font-medium">Your Library</span>
-            </button>
             <div className="flex items-center gap-2">
               <button className="text-zinc-400 hover:text-white hover:bg-zinc-800 p-1 rounded-full transition-colors">
                 <Plus size={20} />

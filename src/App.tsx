@@ -271,7 +271,7 @@ function App() {
                       animate={{ y: 0 }}
                       exit={{ y: "100%" }}
                       transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                      className="fixed bottom-0 left-0 right-0 bg-[#212121] rounded-t-2xl z-40 p-6 pb-[calc(env(safe-area-inset-bottom)+24px)]"
+                      className="fixed bottom-0 left-0 right-0 bg-[#212121] rounded-t-2xl z-40 p-6 pb-24 md:pb-28"
                     >
                       <div className="flex items-center justify-between mb-6">
                         <h3 className="text-xl font-bold">Create</h3>
