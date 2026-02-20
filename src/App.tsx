@@ -14,6 +14,19 @@ function App() {
   const [currentView, setCurrentView] = useState<'home' | 'search' | 'library' | 'downloads'>('home');
   const [searchQuery, setSearchQuery] = useState('');
   const [showNewMenu, setShowNewMenu] = useState(false);
+  const [likedTracks, setLikedTracks] = useState<Set<string>>(new Set());
+
+  const toggleLike = (trackId: string) => {
+    setLikedTracks(prev => {
+      const newLiked = new Set(prev);
+      if (newLiked.has(trackId)) {
+        newLiked.delete(trackId);
+      } else {
+        newLiked.add(trackId);
+      }
+      return newLiked;
+    });
+  };
 
   useEffect(() => {
     const hour = new Date().getHours();
@@ -448,7 +461,15 @@ function App() {
                         <span className="text-xs text-zinc-400 truncate">{track.artist} • {track.album}</span>
                       </div>
                       <div className="flex items-center gap-3">
-                        <Heart size={16} className="text-zinc-400 hover:text-white opacity-0 group-hover:opacity-100 transition-opacity" />
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            toggleLike(track.id);
+                          }}
+                          className={`transition-opacity ${likedTracks.has(track.id) ? 'opacity-100 text-green-500' : 'opacity-0 group-hover:opacity-100 text-zinc-400 hover:text-white'}`}
+                        >
+                          <Heart size={16} fill={likedTracks.has(track.id) ? "currentColor" : "none"} />
+                        </button>
                         <MoreHorizontal size={16} className="text-zinc-400 hover:text-white opacity-0 group-hover:opacity-100 transition-opacity" />
                       </div>
                     </div>
@@ -581,21 +602,25 @@ function App() {
         </div>
       </main>
 
-      <Player 
-        currentTrack={currentTrack} 
-        isPlaying={isPlaying} 
-        onPlayPause={() => setIsPlaying(!isPlaying)}
-        onNext={() => {
-          const currentIndex = MOCK_TRACKS.findIndex(t => t.id === currentTrack.id);
-          const nextIndex = (currentIndex + 1) % MOCK_TRACKS.length;
-          setCurrentTrack(MOCK_TRACKS[nextIndex]);
-        }}
-        onPrev={() => {
-          const currentIndex = MOCK_TRACKS.findIndex(t => t.id === currentTrack.id);
-          const prevIndex = (currentIndex - 1 + MOCK_TRACKS.length) % MOCK_TRACKS.length;
-          setCurrentTrack(MOCK_TRACKS[prevIndex]);
-        }}
-      />
+      {!showNewMenu && (
+        <Player 
+          currentTrack={currentTrack} 
+          isPlaying={isPlaying} 
+          isLiked={likedTracks.has(currentTrack.id)}
+          onToggleLike={() => toggleLike(currentTrack.id)}
+          onPlayPause={() => setIsPlaying(!isPlaying)}
+          onNext={() => {
+            const currentIndex = MOCK_TRACKS.findIndex(t => t.id === currentTrack.id);
+            const nextIndex = (currentIndex + 1) % MOCK_TRACKS.length;
+            setCurrentTrack(MOCK_TRACKS[nextIndex]);
+          }}
+          onPrev={() => {
+            const currentIndex = MOCK_TRACKS.findIndex(t => t.id === currentTrack.id);
+            const prevIndex = (currentIndex - 1 + MOCK_TRACKS.length) % MOCK_TRACKS.length;
+            setCurrentTrack(MOCK_TRACKS[prevIndex]);
+          }}
+        />
+      )}
     </div>
   );
 }

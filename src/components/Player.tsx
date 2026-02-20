@@ -5,12 +5,14 @@ import { motion, AnimatePresence } from 'motion/react';
 interface PlayerProps {
   currentTrack: any;
   isPlaying: boolean;
+  isLiked: boolean;
+  onToggleLike: () => void;
   onPlayPause: () => void;
   onNext: () => void;
   onPrev: () => void;
 }
 
-export function Player({ currentTrack, isPlaying, onPlayPause, onNext, onPrev }: PlayerProps) {
+export function Player({ currentTrack, isPlaying, isLiked, onToggleLike, onPlayPause, onNext, onPrev }: PlayerProps) {
   const [progress, setProgress] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -173,9 +175,12 @@ export function Player({ currentTrack, isPlaying, onPlayPause, onNext, onPrev }:
 
                 {/* Action Pills */}
                 <div className="flex items-center gap-3 overflow-x-auto pb-2 scrollbar-none">
-                  <button className="flex items-center gap-2 bg-[#2a2a2a] px-4 py-2 rounded-full text-white font-medium text-sm hover:bg-[#3a3a3a] transition-colors whitespace-nowrap">
-                    <ThumbsUp size={18} />
-                    <span>127K</span>
+                  <button 
+                    onClick={onToggleLike}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-full font-medium text-sm transition-colors whitespace-nowrap ${isLiked ? 'bg-white text-black hover:bg-zinc-200' : 'bg-[#2a2a2a] text-white hover:bg-[#3a3a3a]'}`}
+                  >
+                    <ThumbsUp size={18} fill={isLiked ? "currentColor" : "none"} />
+                    <span>{isLiked ? '127K' : '127K'}</span>
                   </button>
                   <button className="flex items-center gap-2 bg-[#2a2a2a] px-4 py-2 rounded-full text-white font-medium text-sm hover:bg-[#3a3a3a] transition-colors">
                     <ThumbsDown size={18} />
@@ -307,8 +312,11 @@ export function Player({ currentTrack, isPlaying, onPlayPause, onNext, onPrev }:
               <h4 className="text-white font-medium truncate hover:underline cursor-pointer text-base">{currentTrack.title}</h4>
               <p className="text-zinc-400 text-xs hover:underline cursor-pointer truncate">{currentTrack.artist}</p>
             </div>
-            <button className="text-zinc-400 hover:text-white ml-2 flex-shrink-0">
-              <Heart size={18} />
+            <button 
+              onClick={onToggleLike}
+              className={`ml-2 flex-shrink-0 transition-colors ${isLiked ? 'text-green-500 hover:text-green-400' : 'text-zinc-400 hover:text-white'}`}
+            >
+              <Heart size={18} fill={isLiked ? "currentColor" : "none"} />
             </button>
           </div>
 
