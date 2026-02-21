@@ -14,9 +14,9 @@ function App() {
   const [currentView, setCurrentView] = useState<'home' | 'search' | 'library' | 'downloads'>('home');
   const [searchQuery, setSearchQuery] = useState('');
   const [showNewMenu, setShowNewMenu] = useState(false);
-  const [likedTracks, setLikedTracks] = useState<Set<string>>(new Set());
+  const [likedTracks, setLikedTracks] = useState<Set<number>>(new Set());
 
-  const toggleLike = (trackId: string) => {
+  const toggleLike = (trackId: number) => {
     setLikedTracks(prev => {
       const newLiked = new Set(prev);
       if (newLiked.has(trackId)) {
